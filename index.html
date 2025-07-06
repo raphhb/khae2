@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2nd Date: Staycation Adventure 💖</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Comic+Neue:wght@700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    canvas {
+      display: block;
+      margin: 0 auto;
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
+
+    #openDoorBox {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff0f5;
+      border-radius: 15px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      font-family: "Pacifico", cursive;
+      color: #d63384;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    #openDoorBox button {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-top: 10px;
+      font-family: "Comic Neue", cursive, sans-serif;
+    }
+
+    #dialogBox {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border-radius: 15px;
+      padding: 15px;
+      width: 80%;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      font-family: "Comic Neue", cursive, sans-serif;
+      color: #d63384;
+      display: none;
+    }
+
+    #dialogBox input {
+      width: 90%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 2px solid #ff6b6b;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    #dialogBox button {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    #instructions {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      font-family: "Pacifico", cursive;
+      color: #d63384;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    #instructions h1 {
+      margin: 0 0 10px;
+      font-size: 2rem;
+    }
+
+    #instructions p {
+      font-size: 1.2rem;
+      margin: 10px 0;
+      font-family: "Comic Neue", cursive, sans-serif;
+    }
+
+    #startBtn {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      font-family: "Comic Neue", cursive, sans-serif;
+    }
+
+    #letter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff0f5;
+      border-radius: 20px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      font-family: "Pacifico", cursive;
+      color: #d63384;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      display: none;
+      animation: fadeIn 1s ease;
+    }
+
+    #letter h2 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
+
+    #letter p {
+      font-size: 1.3rem;
+      font-family: "Comic Neue", cursive, sans-serif;
+      margin: 15px 0;
+    }
+
+    #closeLetter {
+      background-color: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-family: "Comic Neue", cursive, sans-serif;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -55%);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Instructions overlay -->
+  <div id="instructions">
+    <h1>💖 2nd Date Adventure 💖</h1>
+    <p>✨ Walk around the room using arrow keys.</p>
+    <p>🚪 Approach a door and click "Open" to enter.</p>
+    <p>🎉 Answer all doors for a surprise!</p>
+    <button id="startBtn">Start Game ❤️</button>
+  </div>
+
+  <!-- Open Door Prompt -->
+  <div id="openDoorBox">
+    <p>🚪 Do you want to open this door?</p>
+    <button onclick="openDoor()">Open ❤️</button>
+  </div>
+
+  <!-- Question Dialog -->
+  <div id="dialogBox">
+    <p id="dialogText">Question goes here</p>
+    <input type="text" id="answerInput" placeholder="Type your answer here 💌" />
+    <button onclick="submitAnswer()">Submit ❤️</button>
+  </div>
+
+  <!-- Staycation Love Letter -->
+  <div id="letter">
+    <h2>💌 A Special Surprise 💌</h2>
+    <p>Pack your bags, Baby! 🧳✨<br> We’re going on a cozy staycation at <b>Highland Mango Ecofarm🌳</b> </p>
+    <p>📅 <b>When:</b> July 07, 2025</p>
+    <p>🗺️ <b>Where:</b> Highland Mango Ecofarm, surrounded by trees and nature 🍃</p>
+    <p>🚗 <b>Where to Meet:</b> Parkmall or Anywhere convenient for you</p>
+    <p>⏰ <b>What Time:</b> I’ll be there at <b>7:30 AM!</b></p>
+    <p>🎒 <b>What to Prepare:</b> Just yourself, my baby cutie ❤️</p>
+    <p>Just you and me for the perfect 2nd date. ❤️</p>
+    <button id="closeLetter">Awww</button>
+  </div>
+
+
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    const dialogBox = document.getElementById('dialogBox');
+    const openDoorBox = document.getElementById('openDoorBox');
+    const dialogText = document.getElementById('dialogText');
+    const answerInput = document.getElementById('answerInput');
+    const instructions = document.getElementById('instructions');
+    const startBtn = document.getElementById('startBtn');
+    const letter = document.getElementById('letter');
+    const closeLetter = document.getElementById('closeLetter');
+
+    const background = new Image();
+    background.src = 'assets/hotel.png';
+
+    const playerImg = new Image();
+    playerImg.src = 'assets/us.png';
+
+    const player = {
+      x: canvas.width / 2,
+      y: canvas.height - 100,
+      width: 150,
+      height: 150,
+      speed: 5
+    };
+
+    const rooms = [
+      {
+        x: canvas.width * 0.15, y: canvas.height * 0.2,
+        width: 80, height: 80,
+        question: "When was our first date?",
+        answer: "march 21, 2025|march 21|3/21/25", // All accepted
+        closed: false
+      },
+      {
+        x: canvas.width * 0.75, y: canvas.height * 0.2,
+        width: 80, height: 80,
+        question: "What’s my favorite food?",
+        answer: "pizza|turon|waffle",
+        closed: false
+      },
+      {
+        x: canvas.width * 0.15, y: canvas.height * 0.7,
+        width: 80, height: 80,
+        question: "How much do you love me rate 1 - 10",
+        answer: "infinity|forever|endless",
+        closed: false
+      },
+      {
+        x: canvas.width * 0.75, y: canvas.height * 0.7,
+        width: 80, height: 80,
+        question: "Are you ready for our staycation?",
+        answer: "yes|of course|absolutely",
+        closed: false
+      }
+    ];
+
+
+    let keys = {};
+    let currentRoom = null;
+    let gameStarted = false;
+    let showOpenPrompt = false;
+
+    startBtn.onclick = () => {
+      instructions.style.display = "none";
+      gameStarted = true;
+      requestAnimationFrame(gameLoop);
+    };
+
+    closeLetter.onclick = () => {
+      letter.style.display = "none";
+    };
+
+    window.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
+    window.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+      if (keys['arrowup'] && player.y - player.height / 2 > 0) player.y -= player.speed;
+      if (keys['arrowdown'] && player.y + player.height / 2 < canvas.height) player.y += player.speed;
+      if (keys['arrowleft'] && player.x - player.width / 2 > 0) player.x -= player.speed;
+      if (keys['arrowright'] && player.x + player.width / 2 < canvas.width) player.x += player.speed;
+
+      ctx.drawImage(playerImg, player.x - player.width / 2, player.y - player.height / 2, player.width, player.height);
+
+      let nearRoom = null;
+      rooms.forEach(room => {
+        ctx.globalAlpha = 0;
+        ctx.fillRect(room.x, room.y, room.width, room.height);
+        ctx.globalAlpha = 1;
+
+        if (!room.closed && isColliding(player, room)) {
+          nearRoom = room;
+        }
+      });
+
+      if (nearRoom && !currentRoom) {
+        showOpenPrompt = true;
+        currentRoom = nearRoom;
+        openDoorBox.style.display = "block";
+      } else if (!nearRoom && showOpenPrompt) {
+        openDoorBox.style.display = "none";
+        showOpenPrompt = false;
+        currentRoom = null;
+      }
+
+      if (rooms.every(r => r.closed) && gameStarted) {
+        gameStarted = false;
+        setTimeout(() => letter.style.display = "block", 500);
+      }
+
+      if (gameStarted) requestAnimationFrame(gameLoop);
+    }
+
+    function openDoor() {
+      openDoorBox.style.display = "none";
+      dialogText.textContent = currentRoom.question;
+      dialogBox.style.display = "block";
+      answerInput.value = "";
+      answerInput.focus();
+    }
+
+    function submitAnswer() {
+      const userAnswer = answerInput.value.trim().toLowerCase();
+
+      // Allow multiple answers and partial matches
+      const acceptableAnswers = currentRoom.answer
+        .toLowerCase()
+        .split("|"); // Use | to separate multiple answers
+
+      // Check if userAnswer matches or contains any of the acceptable answers
+      const isCorrect = acceptableAnswers.some(ans => userAnswer.includes(ans) || ans.includes(userAnswer));
+
+      if (isCorrect) {
+        currentRoom.closed = true;
+        dialogBox.style.display = "none";
+        currentRoom = null;
+      } else {
+        alert("Oops! That’s not correct. Try again ❤️");
+      }
+    }
+
+
+    function isColliding(a, b) {
+      return a.x - a.width / 2 < b.x + b.width &&
+        a.x + a.width / 2 > b.x &&
+        a.y - a.height / 2 < b.y + b.height &&
+        a.y + a.height / 2 > b.y;
+    }
+  </script>
+</body>
+
+</html>
